@@ -22,7 +22,10 @@ class UserTransformer extends ApiTransformer{
      */
     public function transform(User $item)
     {
-        return $this->transformFromModel($item, $this->pivotAttributes);
+        $data = $this->transformFromModel($item, $this->pivotAttributes);
+        $data["is_doctor"] = !!$item->doctor;
+        $data["is_patient"] = !!$item->patient;
+        return $data;
     }
     
     public function includeProfile(User $item)
