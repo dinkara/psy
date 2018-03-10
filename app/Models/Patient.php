@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Dinkara\RepoBuilder\Traits\ApiModel;
+use App\Support\Enum\RatingOwners;
 
 class Patient extends Model
 {
@@ -32,9 +33,20 @@ class Patient extends Model
      *
      * @var array
      */
-    protected $displayable = [];
+    protected $displayable = ['rating'];
     
     public $timestamps = true;
+    
+    public function getRatingAttribute(){        
+        return $this->ratings()->where("owner", RatingOwners::PATIENT)->avg("avg_rate");
+    }
+    
+    
+    public function ratings()
+    {
+        return $this->hasManyThrough('App\Models\Rating', 'App\Models\Session');
+    }
+
     
     public function sessions($q = null, $orderBy = null)
     {
