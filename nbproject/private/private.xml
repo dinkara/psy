@@ -3,11 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/wamp/www/psy/app/Models/Doctor.php</file>
             <file>file:/C:/wamp/www/psy/app/Support/Enum/SessionStatuses.php</file>
             <file>file:/C:/wamp/www/psy/app/Models/Session.php</file>
             <file>file:/C:/wamp/www/psy/app/Transformers/UserTransformer.php</file>
+            <file>file:/C:/wamp/www/psy/routes/web.php</file>
             <file>file:/C:/wamp/www/psy/app/Models/Patient.php</file>
+            <file>file:/C:/wamp/www/psy/app/Models/User.php</file>
+            <file>file:/C:/wamp/www/psy/app/Models/Doctor.php</file>
+            <file>file:/C:/wamp/www/psy/database/.gitignore</file>
         </group>
     </open-files>
 </project-private>
