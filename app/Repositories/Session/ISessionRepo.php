@@ -10,6 +10,6 @@ use Dinkara\RepoBuilder\Repositories\IRepo;
  */
 interface ISessionRepo extends IRepo {
    
-
+    function cancel();
 
 }

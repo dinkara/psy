@@ -16,8 +16,8 @@ class StoreSessionRequest extends ApiRequest
     {
         return [
 	    'patient_id' => 'required',
-	    'price' => 'required',
-	    'start' => 'required',
+	    'price' => 'required|numeric|regex:/^\d*(\.\d{1,2})?$/|min:10',
+	    'start' => 'required|after:now',
 	    'end' => 'required|after:start',
         ];
     }

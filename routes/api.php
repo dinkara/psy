@@ -115,9 +115,12 @@ Route::middleware(['dinkoapi.auth', 'user.check.status'])->group(function (){
 
     });   
 
-    Route::apiResource('patients', 'PatientController', [
+    Route::resource('patients', 'PatientController', [
         'parameters' => [
             'patients' => 'id'
+        ],
+        'except' => [
+            'store', 'update', 'destroy'
         ]
     ]);
     /* End PatientController route section */
@@ -166,6 +169,8 @@ Route::middleware(['dinkoapi.auth', 'user.check.status'])->group(function (){
     Route::group(['prefix' => 'sessions'], function(){
         Route::get('paginate', 'SessionController@paginate');
         
+        Route::post('{id}/cancel', 'SessionController@cancel');
+        
         Route::get('{id}/notes', 'SessionController@allNotes');
 
         Route::get('{id}/notes/paginate', 'SessionController@paginatedNotes');
@@ -178,9 +183,12 @@ Route::middleware(['dinkoapi.auth', 'user.check.status'])->group(function (){
 
     });   
 
-    Route::apiResource('sessions', 'SessionController', [
+    Route::resource('sessions', 'SessionController', [
         'parameters' => [
             'sessions' => 'id'
+        ],
+        'except' => [
+            'destroy'
         ]
     ]);
     /* End SessionController route section */
