@@ -11,6 +11,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Dinkara\DinkoApi\Http\Controllers\ResourceController;
 use Storage;
 use ApiResponse;
+use Illuminate\Pagination\LengthAwarePaginator as Paginator;
 
 
 /**
@@ -26,8 +27,32 @@ class MessageController extends ResourceController
 	
         $this->middleware('owns.message', ['only' => ['update', 'destroy']]);
 
+        $this->middleware('exists.user:receiver_id,true', ['only' => ['store']]);                
+        
+        $this->middleware('exists.user:poi_id,true', ['only' => ['chat']]);
     
+    }
     
+    /**
+     * Get chat messages
+     * 
+     * get paginated list of chat messages between two users
+     *
+     * @param Request $request
+     * @param int $poi_id
+     * @return \Illuminate\Http\Response
+     */
+    public function chat(Request $request, $poi_id){
+        $id = JWTAuth::parseToken()->toUser()->id;
+        
+        $page = $request->page ? $request->page : "1";                
+        $pagination = $request->pagination ? $request->pagination : "15";
+               
+        $result = $this->repo->paginatedChat($id, $poi_id, $page, $pagination);                
+                
+        $paginator = new Paginator($result, $page, $pagination);
+        
+        return ApiResponse::Pagination($paginator, $this->transformer);                
     }
     
     /**
@@ -42,8 +67,9 @@ class MessageController extends ResourceController
     {       
         $data = $request->only($this->repo->getModel()->getFillable());
 
-	    $data["sender_id"] = JWTAuth::parseToken()->toUser()->id;   
+        $data["sender_id"] = JWTAuth::parseToken()->toUser()->id;   
     
+        //dd($data);
         return $this->storeItem($data);
     }
 
@@ -61,7 +87,7 @@ class MessageController extends ResourceController
         $data = $request->only($this->repo->getModel()->getFillable());        
         $item = $this->repo->find($id);
 
-	    $data["sender_id"] = JWTAuth::parseToken()->toUser()->id;   
+        $data["sender_id"] = JWTAuth::parseToken()->toUser()->id;   
     
         return $this->updateItem($data, $id);
     }

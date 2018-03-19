@@ -74,16 +74,18 @@ Route::middleware(['dinkoapi.auth', 'user.check.status'])->group(function (){
     /* End DoctorController route section */
     
     /*===================== MessageController route section =====================*/
-    Route::group(['prefix' => 'messages'], function(){
-        Route::get('paginate', 'MessageController@paginate');
+    Route::group(['prefix' => 'messages'], function(){        
 
-
+        Route::get('{poi_id}/chat', 'MessageController@chat');
 
     });   
 
-    Route::apiResource('messages', 'MessageController', [
+    Route::resource('messages', 'MessageController', [
         'parameters' => [
             'messages' => 'id'
+        ],
+        'only' => [
+            "store"
         ]
     ]);
     /* End MessageController route section */
@@ -220,18 +222,18 @@ Route::middleware(['dinkoapi.auth', 'user.check.status'])->group(function (){
         Route::get('social-networks', 'UserController@allSocialNetworks');
 
         Route::get('social-networks/paginate', 'UserController@paginatedSocialNetworks');
-        
-        Route::get('messages', 'UserController@allMessages');
-
-        Route::get('messages/paginate', 'UserController@paginatedMessages');
-
-        Route::post('roles/{role_id}', 'UserController@attachRole');
-        Route::post('social-networks/{social_network_id}', 'UserController@attachSocialNetwork');
-
-        Route::delete('roles/{role_id}', 'UserController@detachRole');
-        Route::delete('social-networks/{social_network_id}', 'UserController@detachSocialNetwork');
 
     });
+    
+    Route::resource('users', 'UserController', [
+        'parameters' => [
+            'users' => 'id'
+        ],
+        'except' => [
+            'store', 'update', 'destroy'
+        ]
+    ]);
+    
     /* End UserController route section */
     
     /*===================== WalletController route section =====================*/

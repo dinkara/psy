@@ -25,7 +25,7 @@ class Message extends Model
      *
      * @var array
      */
-    protected $fillable = ['sender_id', 'text'];
+    protected $fillable = ['sender_id', 'receiver_id', 'text'];
     
     /**
      * The attributes that are will be shown in transformer

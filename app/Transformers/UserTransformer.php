@@ -12,7 +12,7 @@ use Dinkara\DinkoApi\Transformers\ApiTransformer;
 class UserTransformer extends ApiTransformer{
     
     protected $defaultIncludes = ['profile', 'wallet'];
-    protected $availableIncludes = ['messages', 'roles', 'socialNetworks'];
+    protected $availableIncludes = ['roles', 'socialNetworks', 'contacts'];
     protected $pivotAttributes = ['access_token', 'provider_id'];
     
     /**
@@ -27,7 +27,10 @@ class UserTransformer extends ApiTransformer{
         $data["is_patient"] = !!$item->patient;
         return $data;
     }
-    
+    public function includeContacts(User $item)
+    { 
+       return $this->collection($item->contacts, new UserTransformer());
+    }
     public function includeProfile(User $item)
     { 
        return $this->item($item->profile, new ProfileTransformer());
@@ -36,10 +39,7 @@ class UserTransformer extends ApiTransformer{
     { 
        return $this->item($item->wallet, new WalletTransformer());
     }
-    public function includeMessages(User $item)
-    {
-       return $this->collection($item->messages, new MessageTransformer());
-    }
+    
     public function includeRoles(User $item)
     {
        return $this->collection($item->roles, new RoleTransformer());

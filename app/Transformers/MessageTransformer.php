@@ -12,7 +12,7 @@ use Dinkara\DinkoApi\Transformers\ApiTransformer;
 class MessageTransformer extends ApiTransformer{
     
     protected $defaultIncludes = [];
-    protected $availableIncludes = ['sender'];
+    protected $availableIncludes = ['sender', 'receiver'];
     protected $pivotAttributes = [];
     
     /**
@@ -25,11 +25,14 @@ class MessageTransformer extends ApiTransformer{
         return $this->transformFromModel($item, $this->pivotAttributes);
     }
     
-    public function includeUser(Message $item)
+    public function includeSender(Message $item)
     { 
        return $this->item($item->sender, new UserTransformer());
     }
 
-
+    public function includeReceiver(Message $item)
+    { 
+       return $this->item($item->receiver, new UserTransformer());
+    }
     
 }

@@ -262,8 +262,6 @@ class EloquentUser extends EloquentRepo implements IUserRepo {
         $result = $this->model->socialNetworks()->detach($model);
         
         return $this->finalize($this->model);
-    }
-
-
+    }    
 
 }

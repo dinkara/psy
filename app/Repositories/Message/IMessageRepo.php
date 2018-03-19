@@ -10,6 +10,6 @@ use Dinkara\RepoBuilder\Repositories\IRepo;
  */
 interface IMessageRepo extends IRepo {
    
-
-
+    public function paginatedChat($id, $poi_id, $page, $perPage = 15);
+    
 }

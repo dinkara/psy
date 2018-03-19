@@ -97,7 +97,6 @@ interface IUserRepo extends IRepo {
 
     function detachRole(Role $model);
 
-    function detachSocialNetwork(SocialNetwork $model);
-
+    function detachSocialNetwork(SocialNetwork $model);    
 
 }

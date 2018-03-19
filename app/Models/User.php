@@ -44,8 +44,17 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($value);
     }
+            
     
-    
+    /**
+     * Get all contacts of user
+     */
+    public function contacts()
+    {
+        return $this->hasManyThrough('App\Models\User', 'App\Models\Message', 
+                'sender_id', 'id', 'id', 'receiver_id')->distinct();
+    }
+
     public function passwordReset()
     {
         return $this->hasOne('App\Models\PasswordReset', 'user_id');

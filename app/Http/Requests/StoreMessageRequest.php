@@ -17,7 +17,7 @@ class StoreMessageRequest extends ApiRequest
     {
         return [
 	    'text' => 'required',
-
+            'receiver_id' => 'required',
         ];
     }
 }

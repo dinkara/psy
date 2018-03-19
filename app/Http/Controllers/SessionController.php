@@ -51,7 +51,7 @@ class SessionController extends ResourceController
 	
         return $this->storeItem($data);
     }
-
+    
     /**
      * Update item 
      * 
