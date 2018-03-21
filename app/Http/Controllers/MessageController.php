@@ -29,6 +29,8 @@ class MessageController extends ResourceController
 
         $this->middleware('exists.user:receiver_id,true', ['only' => ['store']]);                
         
+        $this->middleware('can.message', ['only' => ['store']]);
+        
         $this->middleware('exists.user:poi_id,true', ['only' => ['chat']]);
     
     }

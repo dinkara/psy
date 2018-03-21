@@ -32,7 +32,7 @@ class Message extends Model
      *
      * @var array
      */
-    protected $displayable = ['text'];
+    protected $displayable = ['text', 'created_at'];
     
     public $timestamps = true;
     

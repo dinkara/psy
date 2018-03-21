@@ -90,7 +90,7 @@ class Kernel extends HttpKernel
         'owns.session' => \App\Http\Middleware\SessionOwner::class,
         'owns.note' => \App\Http\Middleware\NotenOwner::class,
         'owns.certificate' => \App\Http\Middleware\CertificateOwner::class,
-
+        'can.message' => \App\Http\Middleware\CanMessage::class,
 
     ];
 }
