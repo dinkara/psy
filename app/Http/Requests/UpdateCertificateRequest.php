@@ -18,7 +18,7 @@ class UpdateCertificateRequest extends ApiRequest
         return [
 	    'name' => 'required',
 	    'description' => 'required',
-	    'url' => 'image|dimensions:min_width=300,min_height=300',
+	    'url' => 'file|mimetypes:application/pdf',
 
         ];
     }
