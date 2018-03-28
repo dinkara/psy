@@ -29,7 +29,7 @@ class DoctorExists extends DinkoApiExistsMiddleware
     public function handle($request, Closure $next, $key = 'doctor_id', $isForeign = false)
     {                        
         $this->id = $request->id;
-        
+
         if($isForeign){            
 	    $this->id = $request->get("$key");
             
@@ -37,11 +37,11 @@ class DoctorExists extends DinkoApiExistsMiddleware
                 $this->id = eval('return $request->'.$key.';');
             }
         }
-        
+
         if(!$this->id){
             return $next($request);
         }
-        
+
 	return parent::handle($request, $next);			
     }
 }

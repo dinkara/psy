@@ -19,7 +19,7 @@ class Doctor extends Model
      *
      * @var array
      */
-    protected $searchableColumns = ['price', 'duration', 'available'];
+    protected $searchableColumns = ['price', 'user.profile.name'];
     
     /**
      * The attributes that are mass assignable.

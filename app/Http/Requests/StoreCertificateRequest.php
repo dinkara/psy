@@ -18,7 +18,7 @@ class StoreCertificateRequest extends ApiRequest
         return [
 	    'name' => 'required',
 	    'description' => 'required',
-	    'url' => 'required|file|mimetypes:application/pdf',
+	    'url' => 'required|file|mimetypes:application/pdf,application/msword',
 
         ];
     }
