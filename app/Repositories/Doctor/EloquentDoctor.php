@@ -20,8 +20,15 @@ class EloquentDoctor extends EloquentRepo implements IDoctorRepo {
     public function model() {
         return new Doctor;
     }
-    
 
-    
+    public function sessionsInRange($start, $end) {
+        if (!$this->model) {
+            return false;
+        }
+                       
+        $result = $this->model->sessions()->whereDate('start', '>=', $start)->whereDate('start', '<', $end)->orderBy('start', 'asc')->get();
+        
+        return $result;
+    }
 
 }

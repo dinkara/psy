@@ -13,7 +13,7 @@ use Storage;
 use ApiResponse;
 use App\Transformers\CertificateTransformer;
 use App\Transformers\SessionTransformer;
-
+use App\Http\Requests\SearchSessionsRequest;
 
 /**
  * @resource Doctor
@@ -30,7 +30,7 @@ class DoctorController extends ResourceController
 
         $this->middleware('owns.doctor', ['only' => ['update', 'destroy']]);
 
-        $this->middleware('doctor', ['only' => ['store', 'update', 'destroy']]);
+        $this->middleware('doctor', ['only' => ['store', 'update', 'destroy', 'sessionsInRange', 'allSessions', 'paginatedSessions', 'allCertificates', 'paginatedCertificates']]);
     
     }
     
@@ -65,7 +65,7 @@ class DoctorController extends ResourceController
         $data = $request->only($this->repo->getModel()->getFillable());        
         $item = $this->repo->find($id);
 
-	    $data["user_id"] = JWTAuth::parseToken()->toUser()->id;   
+        $data["user_id"] = JWTAuth::parseToken()->toUser()->id;   
     
         return $this->updateItem($data, $id);
     }
@@ -139,14 +139,14 @@ class DoctorController extends ResourceController
      *
      * Sessions from existing resource.
      *
-     * @param Request $request
-     * @param  int  $id
+     * @param Request $request     
      * @return Dinkara\DinkoApi\Support\ApiResponse
      */
-    public function allSessions(Request $request, $id)
+    public function allSessions(Request $request)
     {	   
         try{
-            return ApiResponse::Collection($this->repo->find($id)->getModel()->sessions($request->q, $request->orderBy)->get(), new SessionTransformer);
+            $user = JWTAuth::parseToken()->toUser();
+            return ApiResponse::Collection($this->repo->find($user->doctor->id)->getModel()->sessions($request->q, $request->orderBy)->get(), new SessionTransformer);
         } catch (QueryException $e) {
             return ApiResponse::InternalError($e->getMessage());
         }
@@ -157,25 +157,43 @@ class DoctorController extends ResourceController
      * 
      * Display a list of paginated items .
      *
-     * @param Request $request
-     * @param  int  $id
+     * @param Request $request     
      * @return Dinkara\DinkoApi\Support\ApiResponse
      */
-    public function paginatedSessions(Request $request, $id)
+    public function paginatedSessions(Request $request)
     {   
         try{    
+            $user = JWTAuth::parseToken()->toUser();
             if($pagination = $request->pagination){
-                return ApiResponse::Pagination($this->repo->find($id)->getModel()->sessions($request->q, $request->orderBy)->paginate($pagination), new SessionTransformer); 
+                return ApiResponse::Pagination($this->repo->find($user->doctor->id)->getModel()->sessions($request->q, $request->orderBy)->paginate($pagination), new SessionTransformer); 
             }
             else{
-                return ApiResponse::Pagination($this->repo->find($id)->getModel()->sessions($request->q, $request->orderBy)->paginate(), new SessionTransformer); 
+                return ApiResponse::Pagination($this->repo->find($user->doctor->id)->getModel()->sessions($request->q, $request->orderBy)->paginate(), new SessionTransformer); 
             }   
             
         } catch (QueryException $e) {
             return ApiResponse::InternalError($e->getMessage());
         } 
     }
+    
+    /**
+     * Get all Session for Doctor with given $id in timespan
+     *
+     * Sessions from existing resource.
+     *
+     * @param Request $request     
+     * @return Dinkara\DinkoApi\Support\ApiResponse
+     */
+    public function sessionsInRange(SearchSessionsRequest $request)
+    {	   
+        try{
+            $user = JWTAuth::parseToken()->toUser();
+            return ApiResponse::Collection($this->repo->find($user->doctor->id)->sessionsInRange($request->start, $request->end), new SessionTransformer);
+        } catch (QueryException $e) {
+            return ApiResponse::InternalError($e->getMessage());
+        }
+    }
 
-
+    
 
 }

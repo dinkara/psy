@@ -58,9 +58,11 @@ Route::middleware(['dinkoapi.auth', 'user.check.status'])->group(function (){
 
         Route::get('{id}/certificates/paginate', 'DoctorController@paginatedCertificates');
         
-        Route::get('{id}/sessions', 'DoctorController@allSessions');
+        Route::get('sessions', 'DoctorController@allSessions');
 
-        Route::get('{id}/sessions/paginate', 'DoctorController@paginatedSessions');
+        Route::get('sessions/paginate', 'DoctorController@paginatedSessions');
+        
+        Route::post('sessions/range', 'DoctorController@sessionsInRange');
 
 
 

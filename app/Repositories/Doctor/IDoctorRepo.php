@@ -11,5 +11,5 @@ use Dinkara\RepoBuilder\Repositories\IRepo;
 interface IDoctorRepo extends IRepo {
    
 
-
+    function sessionsInRange($start, $end);
 }
