@@ -32,4 +32,14 @@ class EloquentSession extends EloquentRepo implements ISessionRepo {
         return $this->finalize($result);
     }
 
+    public function approve() {
+        if (!$this->model) {
+            return false;
+        }
+               
+        $this->model->status = SessionStatuses::APPROVED;
+        $result = $this->model->save();
+        
+        return $this->finalize($result);
+    }
 }

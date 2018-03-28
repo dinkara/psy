@@ -88,6 +88,7 @@ class Kernel extends HttpKernel
         'owns.profile' => \App\Http\Middleware\ProfileOwner::class,    
         'owns.wallet' => \App\Http\Middleware\WalletOwner::class,
         'owns.session' => \App\Http\Middleware\SessionOwner::class,
+        'session.participant' => \App\Http\Middleware\SessionOwner::class,
         'owns.note' => \App\Http\Middleware\NotenOwner::class,
         'owns.certificate' => \App\Http\Middleware\CertificateOwner::class,
         'can.message' => \App\Http\Middleware\CanMessage::class,

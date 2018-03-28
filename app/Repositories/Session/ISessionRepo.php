@@ -12,4 +12,5 @@ interface ISessionRepo extends IRepo {
    
     function cancel();
 
+    function approve();
 }

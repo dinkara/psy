@@ -175,6 +175,8 @@ Route::middleware(['dinkoapi.auth', 'user.check.status'])->group(function (){
         
         Route::post('{id}/cancel', 'SessionController@cancel');
         
+        Route::post('{id}/approve', 'SessionController@approve');
+        
         Route::get('{id}/notes', 'SessionController@allNotes');
 
         Route::get('{id}/notes/paginate', 'SessionController@paginatedNotes');

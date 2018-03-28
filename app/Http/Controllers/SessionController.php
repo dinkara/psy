@@ -30,9 +30,13 @@ class SessionController extends ResourceController
 
         $this->middleware('exists.patient:patient_id,true', ['only' => ['store']]);
 
-        $this->middleware('doctor', ['only' => ['store', 'update', 'cancel', 'destroy']]);
+        $this->middleware('patient', ['only' => ['approve']]);
+        
+        $this->middleware('session.participant', ['only' => ['approve', 'cancel']]);
+        
+        $this->middleware('doctor', ['only' => ['store', 'update', 'destroy']]);
 
-        $this->middleware('owns.session', ['only' => ['update', 'cancel', 'destroy']]);
+        $this->middleware('owns.session', ['only' => ['update', 'destroy']]);
     }
     
     /**
@@ -83,6 +87,27 @@ class SessionController extends ResourceController
         try {
             if( $item = $this->repo->find($id)){
                 return ApiResponse::ItemUpdated($item->cancel()->getModel(), new $this->transformer, class_basename($this->repo->getModel()));
+            }
+        } catch (QueryException $e) {
+            return ApiResponse::InternalError($e->getMessage());
+        }
+        return ApiResponse::ItemNotFound($this->repo->getModel());
+                                
+    }
+    
+    /**
+     * Approve item 
+     * 
+     * Sets session status to canceled
+     *     
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function approve($id)
+    {                	
+        try {
+            if( $item = $this->repo->find($id)){
+                return ApiResponse::ItemUpdated($item->approve()->getModel(), new $this->transformer, class_basename($this->repo->getModel()));
             }
         } catch (QueryException $e) {
             return ApiResponse::InternalError($e->getMessage());
