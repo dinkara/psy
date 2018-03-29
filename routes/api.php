@@ -133,17 +133,24 @@ Route::middleware(['dinkoapi.auth', 'user.check.status'])->group(function (){
     Route::group(['prefix' => 'questions'], function(){
         Route::get('paginate', 'QuestionController@paginate');
         
-        Route::get('{id}/ratings', 'QuestionController@allRatings');
+        Route::get('doctor', 'QuestionController@doctorQuestions');
+        
+        Route::get('patient', 'QuestionController@patientQuestions');
+        
+        //Route::get('{id}/ratings', 'QuestionController@allRatings');
 
-        Route::get('{id}/ratings/paginate', 'QuestionController@paginatedRatings');
+        //Route::get('{id}/ratings/paginate', 'QuestionController@paginatedRatings');
 
 
 
     });   
 
-    Route::apiResource('questions', 'QuestionController', [
+    Route::resource('questions', 'QuestionController', [
         'parameters' => [
             'questions' => 'id'
+        ],
+        'only' => [
+            'index'
         ]
     ]);
     /* End QuestionController route section */
@@ -158,13 +165,16 @@ Route::middleware(['dinkoapi.auth', 'user.check.status'])->group(function (){
 
         Route::post('{id}/questions/{question_id}', 'RatingController@attachQuestion');
 
-        Route::delete('{id}/questions/{question_id}', 'RatingController@detachQuestion');
+        //Route::delete('{id}/questions/{question_id}', 'RatingController@detachQuestion');
 
     });   
 
-    Route::apiResource('ratings', 'RatingController', [
+    Route::resource('ratings', 'RatingController', [
         'parameters' => [
             'ratings' => 'id'
+        ],
+        'only' => [
+            'store'
         ]
     ]);
     /* End RatingController route section */

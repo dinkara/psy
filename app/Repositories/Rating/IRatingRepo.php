@@ -16,5 +16,6 @@ interface IRatingRepo extends IRepo {
 
     function detachQuestion(Question $model);
 
+    function refreshAvgRate();
 
 }

@@ -29,7 +29,7 @@ class RatingExists extends DinkoApiExistsMiddleware
     public function handle($request, Closure $next, $key = 'rating_id', $isForeign = false)
     {                        
         $this->id = $request->id;
-        
+                
         if($isForeign){            
 	    $this->id = $request->get("$key");
             

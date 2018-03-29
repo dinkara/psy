@@ -21,7 +21,7 @@ return [
         'insufficient_permissions' => 'You do not have sufficient permissions on answer to this question!',
     ],
     'ratings' =>[
-
+        'already_added' => "You can only add one rating per session!"
     ],
 
     'token_not_provided' => 'Token not provided!',

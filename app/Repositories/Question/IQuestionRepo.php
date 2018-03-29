@@ -10,6 +10,8 @@ use Dinkara\RepoBuilder\Repositories\IRepo;
  */
 interface IQuestionRepo extends IRepo {
    
-
+    function doctorQuestions();
+    
+    function patientQuestions();
 
 }

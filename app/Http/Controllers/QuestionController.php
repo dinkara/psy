@@ -28,7 +28,44 @@ class QuestionController extends ResourceController
 
         $this->middleware('admin', ['only' => ['store', 'update', 'destroy']]);
     
-    }
+        $this->middleware('patient', ['only' => ['patientQuestions']]);
+        
+        $this->middleware('doctor', ['only' => ['doctorQuestions']]);
+    }        
+    
+    /**
+     * Get all items for patient
+     * 
+     * Display a listing of the item.
+     *
+     * @param Request $request
+     * @return type
+     */
+    public function patientQuestions(Request $request)
+    {   
+        try{
+            return ApiResponse::Collection($this->repo->patientQuestions(), new $this->transformer);
+        } catch (QueryException $e) {
+            return ApiResponse::InternalError($e->getMessage());
+        } 
+    }    
+    
+    /**
+     * Get all items for doctor
+     * 
+     * Display a listing of the item.
+     *
+     * @param Request $request
+     * @return type
+     */
+    public function doctorQuestions(Request $request)
+    {   
+        try{
+            return ApiResponse::Collection($this->repo->doctorQuestions(), new $this->transformer);
+        } catch (QueryException $e) {
+            return ApiResponse::InternalError($e->getMessage());
+        } 
+    }    
     
     /**
      * Create item

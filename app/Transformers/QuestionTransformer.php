@@ -12,7 +12,7 @@ use Dinkara\DinkoApi\Transformers\ApiTransformer;
 class QuestionTransformer extends ApiTransformer{
     
     protected $defaultIncludes = [];
-    protected $availableIncludes = ['ratings'];
+    protected $availableIncludes = [];
     protected $pivotAttributes = ['mark'];
     
     /**

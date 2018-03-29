@@ -25,7 +25,7 @@ class Rating extends Model
      *
      * @var array
      */
-    protected $fillable = ['session_id', 'comment', 'owner', 'avg_rate'];
+    protected $fillable = ['session_id', 'comment', 'owner'];
     
     /**
      * The attributes that are will be shown in transformer

@@ -9,8 +9,9 @@ use App\Support\Enum\QuestionTypes;
 use ApiResponse;
 use Lang;
 
-class AttachPatientQuestion
+class AttachQuestion
 {
+
     protected $repo;
 
     /**
@@ -32,8 +33,12 @@ class AttachPatientQuestion
     public function handle($request, Closure $next)
     {
         $user = JWTAuth::parseToken()->toUser();
-        if($user->doctor && $this->repo->find($request->route('question_id'))->getModel()->type === QuestionTypes::PATIENT){
-            return $next($request);
+        $type = $this->repo->find($request->route('question_id'))->getModel()->type;
+        
+        if(($user->doctor && 
+            ($type === QuestionTypes::DOCTOR || $type === QuestionTypes::BOTH)) || 
+            ($user->patient && ($type === QuestionTypes::PATIENT || $type === QuestionTypes::BOTH))){
+                return $next($request);
         }else{
             return ApiResponse::Unauthorized(Lang::get("middlewares.questions.insufficient_permissions"));
         };

@@ -57,10 +57,9 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'admin' => \App\Http\Middleware\IsAdmin::class,
-        'doctor' => \App\Http\Middleware\IsDoctor::class,
-        'doctor.question' => \App\Http\Middleware\AttachDoctorQuestion::class,
+        'doctor' => \App\Http\Middleware\IsDoctor::class,        
         'patient' => \App\Http\Middleware\IsPatient::class,
-        'patient.question' => \App\Http\Middleware\AttachPatientQuestion::class,
+        'attach.question' => \App\Http\Middleware\AttachQuestion::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
         'jwt.refresh' => \Tymon\JWTAuth\Middleware\RefreshToken::class,
@@ -93,6 +92,7 @@ class Kernel extends HttpKernel
         'owns.note' => \App\Http\Middleware\NotenOwner::class,
         'owns.certificate' => \App\Http\Middleware\CertificateOwner::class,
         'can.message' => \App\Http\Middleware\CanMessage::class,
+        'rating.added' => \App\Http\Middleware\RatingAlreadyAdded::class,
 
     ];
 }

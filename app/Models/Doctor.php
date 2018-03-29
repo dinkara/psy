@@ -38,7 +38,7 @@ class Doctor extends Model
     public $timestamps = true;        
     
     public function getRatingAttribute(){        
-        return $this->ratings()->where("owner", RatingOwners::DOCTOR)->avg("avg_rate");
+        return $this->ratings()->where("owner", RatingOwners::PATIENT)->avg("avg_rate");
     }
     
     

@@ -8,7 +8,9 @@ use Dinkara\DinkoApi\Http\Middleware\DinkoApiOwnerMiddleware;
 use Lang;
 use ApiResponse;
 use JWTAuth;
-class SessionParticipant {
+use App\Support\Enum\RatingOwners;
+
+class RatingAlreadyAdded {
 
     protected $repo;
 
@@ -46,8 +48,16 @@ class SessionParticipant {
 
         $user = JWTAuth::parseToken()->toUser();
         
-        if($resource->doctor->user && $resource->patient->user && $user && $resource->doctor->user->id != $user->id && $resource->patient->user->id != $user->id){
-            return ApiResponse::Unauthorized(Lang::get("dinkoapi.middleware.owner_failed"));
+        $found = false;
+        foreach($resource->ratings as $rating){
+            if(($rating->owner == RatingOwners::DOCTOR && $user->doctor) || ($rating->owner == RatingOwners::PATIENT && $user->patient)){
+                $found = true;
+                break;
+            }
+        }
+        
+        if($found){
+            return ApiResponse::Unauthorized(Lang::get("middlewares.ratings.already_added"));
         }
 
         return $next($request);

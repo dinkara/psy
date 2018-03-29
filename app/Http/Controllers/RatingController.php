@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreRatingRequest;
 use App\Http\Requests\UpdateRatingRequest;
 use App\Repositories\Rating\IRatingRepo;
+use App\Repositories\Session\ISessionRepo;
 use App\Transformers\RatingTransformer;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Dinkara\DinkoApi\Http\Controllers\ResourceController;
@@ -14,7 +15,7 @@ use ApiResponse;
 use App\Http\Requests\RatingAttachQuestionRequest;
 use App\Repositories\Question\IQuestionRepo;
 use App\Transformers\QuestionTransformer;
-
+use App\Support\Enum\RatingOwners;
 
 /**
  * @resource Rating
@@ -27,17 +28,21 @@ class RatingController extends ResourceController
      */
     private $questionRepo;
         
+    /**
+     * @var ISessionRepo 
+     */
+    private $sessionRepo;
     
-    public function __construct(IRatingRepo $repo, RatingTransformer $transformer, IQuestionRepo $questionRepo) {
+    public function __construct(IRatingRepo $repo, RatingTransformer $transformer, IQuestionRepo $questionRepo, ISessionRepo $sessionRepo) {
         parent::__construct($repo, $transformer);
 	
-        $this->middleware(['exists.session:session_id,true', 'session.completed:session_id,true'], ['only' => ['store']]);
+        $this->middleware(['exists.session:session_id,true' , 'session.participant:session_id,true', 'session.completed:session_id,true', 'rating.added:session_id,true'], ['only' => ['store']]);
 
-        $this->middleware('exists.question:question_id,true', ['only' => ['attachQuestion', 'detachQuestion']]);
-
-        $this->middleware(['exists.rating', 'patient.question', 'doctor.question' ], ['only' => ['attachQuestion', 'detachQuestion']]);
+        $this->middleware(['exists.question:question_id,true', 'exists.rating', 'attach.question' ], ['only' => ['attachQuestion', 'detachQuestion']]);
 
     	$this->questionRepo = $questionRepo;
+        
+        $this->sessionRepo = $sessionRepo;
 
     }
     
@@ -53,6 +58,9 @@ class RatingController extends ResourceController
     {       
         $data = $request->only($this->repo->getModel()->getFillable());
 
+        $user = JWTAuth::parseToken()->toUser();
+        $session = $this->sessionRepo->find($request->session_id)->getModel();
+        $data["owner"] = $user->id == $session->doctor->user->id ? RatingOwners::DOCTOR : RatingOwners::PATIENT;
 	
         return $this->storeItem($data);
     }
@@ -156,7 +164,7 @@ class RatingController extends ResourceController
 	    	
 	    $model = $this->questionRepo->find($question_id)->getModel();
 
-            return ApiResponse::ItemAttached($this->repo->find($id)->attachQuestion($model, $data)->getModel(), $this->transformer);
+            return ApiResponse::ItemAttached($this->repo->find($id)->attachQuestion($model, $data)->refreshAvgRate()->getModel(), $this->transformer);
     }
 
     
