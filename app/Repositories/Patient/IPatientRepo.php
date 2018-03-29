@@ -10,6 +10,6 @@ use Dinkara\RepoBuilder\Repositories\IRepo;
  */
 interface IPatientRepo extends IRepo {
    
-
+    function sessionsInRange($start, $end);
 
 }

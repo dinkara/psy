@@ -19,9 +19,10 @@ class IsPatient
     public function handle($request, Closure $next)
     {
         $user = JWTAuth::parseToken()->toUser();
-        if($user->patient){
+        
+        if($user->patient){            
             return $next($request);
-        }else{
+        }else{            
             return ApiResponse::Unauthorized(Lang::get("auth.insufficient_permissions"));
         }
     }

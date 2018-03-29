@@ -111,11 +111,11 @@ Route::middleware(['dinkoapi.auth', 'user.check.status'])->group(function (){
     Route::group(['prefix' => 'patients'], function(){
         Route::get('paginate', 'PatientController@paginate');
         
-        Route::get('{id}/sessions', 'PatientController@allSessions');
+        Route::get('sessions', 'PatientController@allSessions');
 
-        Route::get('{id}/sessions/paginate', 'PatientController@paginatedSessions');
+        Route::get('sessions/paginate', 'PatientController@paginatedSessions');
 
-
+        Route::post('sessions/range', 'PatientController@sessionsInRange');
 
     });   
 

@@ -8,8 +8,9 @@ use Dinkara\DinkoApi\Http\Middleware\DinkoApiOwnerMiddleware;
 use Lang;
 use ApiResponse;
 use JWTAuth;
-class SessionParticipant extends DinkoApiOwnerMiddleware
-{
+class SessionParticipant {
+
+    protected $repo;
 
     /**
      * Create a new Session Middleware instance.
@@ -28,14 +29,13 @@ class SessionParticipant extends DinkoApiOwnerMiddleware
      * @return mixed
      */
     public function handle($request, Closure $next)
-    {
-
+    {        
         $this->repo->find($request->id);
 
         $resource = $this->repo->getModel();
 
         $user = JWTAuth::parseToken()->toUser();
-
+        
         if($resource->doctor->user && $resource->patient->user && $user && $resource->doctor->user->id != $user->id && $resource->patient->user->id != $user->id){
             return ApiResponse::Unauthorized(Lang::get("dinkoapi.middleware.owner_failed"));
         }

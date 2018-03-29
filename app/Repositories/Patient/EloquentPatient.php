@@ -22,6 +22,15 @@ class EloquentPatient extends EloquentRepo implements IPatientRepo {
     }
     
 
+    public function sessionsInRange($start, $end) {
+        if (!$this->model) {
+            return false;
+        }
+                       
+        $result = $this->model->sessions()->whereDate('start', '>=', $start)->whereDate('start', '<', $end)->orderBy('start', 'asc')->get();
+        
+        return $result;
+    }
     
 
 }

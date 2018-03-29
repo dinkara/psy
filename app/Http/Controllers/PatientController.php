@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePatientRequest;
 use App\Http\Requests\UpdatePatientRequest;
+use App\Http\Requests\SearchSessionsRequest;
 use App\Repositories\Patient\IPatientRepo;
 use App\Transformers\PatientTransformer;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -26,8 +27,8 @@ class PatientController extends ResourceController
         parent::__construct($repo, $transformer);
 	
         $this->middleware('owns.patient', ['only' => ['update', 'destroy']]);
-
-        $this->middleware('patient', ['only' => ['store', 'update', 'destroy']]);
+        
+        $this->middleware('patient', ['only' => ['store', 'update', 'destroy', 'allSessions', 'paginatedSessions', 'sessionsInRange']]);
     
     }
     
@@ -95,14 +96,14 @@ class PatientController extends ResourceController
      *
      * Sessions from existing resource.
      *
-     * @param Request $request
-     * @param  int  $id
+     * @param Request $request     
      * @return Dinkara\DinkoApi\Support\ApiResponse
      */
-    public function allSessions(Request $request, $id)
+    public function allSessions(Request $request)
     {	   
         try{
-            return ApiResponse::Collection($this->repo->find($id)->getModel()->sessions($request->q, $request->orderBy)->get(), new SessionTransformer);
+            $user = JWTAuth::parseToken()->toUser();
+            return ApiResponse::Collection($this->repo->find($user->patient->id)->getModel()->sessions($request->q, $request->orderBy)->get(), new SessionTransformer);
         } catch (QueryException $e) {
             return ApiResponse::InternalError($e->getMessage());
         }
@@ -113,18 +114,18 @@ class PatientController extends ResourceController
      * 
      * Display a list of paginated items .
      *
-     * @param Request $request
-     * @param  int  $id
+     * @param Request $request     
      * @return Dinkara\DinkoApi\Support\ApiResponse
      */
-    public function paginatedSessions(Request $request, $id)
+    public function paginatedSessions(Request $request)
     {   
         try{    
             if($pagination = $request->pagination){
-                return ApiResponse::Pagination($this->repo->find($id)->getModel()->sessions($request->q, $request->orderBy)->paginate($pagination), new SessionTransformer); 
+                $user = JWTAuth::parseToken()->toUser();
+                return ApiResponse::Pagination($this->repo->find($user->patient->id)->getModel()->sessions($request->q, $request->orderBy)->paginate($pagination), new SessionTransformer); 
             }
             else{
-                return ApiResponse::Pagination($this->repo->find($id)->getModel()->sessions($request->q, $request->orderBy)->paginate(), new SessionTransformer); 
+                return ApiResponse::Pagination($this->repo->find($user->patient->id)->getModel()->sessions($request->q, $request->orderBy)->paginate(), new SessionTransformer); 
             }   
             
         } catch (QueryException $e) {
@@ -133,5 +134,22 @@ class PatientController extends ResourceController
     }
 
 
-
+    /**
+     * Get all Session for Doctor with given $id in timespan
+     *
+     * Sessions from existing resource.
+     *
+     * @param Request $request     
+     * @return Dinkara\DinkoApi\Support\ApiResponse
+     */
+    public function sessionsInRange(SearchSessionsRequest $request)
+    {	   
+        try{
+            $user = JWTAuth::parseToken()->toUser();
+            return ApiResponse::Collection($this->repo->find($user->patient->id)->sessionsInRange($request->start, $request->end), new SessionTransformer);
+        } catch (QueryException $e) {
+            return ApiResponse::InternalError($e->getMessage());
+        }
+    }
+    
 }

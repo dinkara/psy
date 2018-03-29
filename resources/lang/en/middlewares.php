@@ -14,7 +14,8 @@ return [
     */
 
     'sessions' =>[
-        'notcompleted' => 'You do not have sufficient permissions to create rating for session which is not completed!'
+        'notcompleted' => 'You do not have sufficient permissions to create rating for session which is not completed!',
+        'notscheduled' => 'This can only be done while session has scheduled status!'
     ],
     'questions' =>[
         'insufficient_permissions' => 'You do not have sufficient permissions on answer to this question!',

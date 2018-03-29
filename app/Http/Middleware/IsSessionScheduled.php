@@ -8,7 +8,7 @@ use Lang;
 use App\Support\Enum\SessionStatuses;
 use App\Repositories\Session\ISessionRepo;
 
-class IsSessionCompleted
+class IsSessionScheduled
 {
     protected $repo;
     protected $id;
@@ -28,7 +28,7 @@ class IsSessionCompleted
      * @return mixed
      */
     public function handle($request, Closure $next, $key = 'session_id', $isForeign = false)
-    {
+    {        
         $this->id = $request->id;
 
         if($isForeign){            
@@ -39,10 +39,10 @@ class IsSessionCompleted
             }
         }
         
-        if($this->repo->find($this->id)->getModel()->status == SessionStatuses::COMPLETED){
+        if($this->repo->find($this->id)->getModel()->status == SessionStatuses::SCHEDULED){
             return $next($request);
         }else{
-            return ApiResponse::Unauthorized(Lang::get("middlewares.sessions.notcompleted"));
+            return ApiResponse::Unauthorized(Lang::get("middlewares.sessions.notscheduled"));
         }
 
     }

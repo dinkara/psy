@@ -31,7 +31,7 @@ class RatingController extends ResourceController
     public function __construct(IRatingRepo $repo, RatingTransformer $transformer, IQuestionRepo $questionRepo) {
         parent::__construct($repo, $transformer);
 	
-        $this->middleware(['exists.session:session_id,true', 'session.completed'], ['only' => ['store']]);
+        $this->middleware(['exists.session:session_id,true', 'session.completed:session_id,true'], ['only' => ['store']]);
 
         $this->middleware('exists.question:question_id,true', ['only' => ['attachQuestion', 'detachQuestion']]);
 

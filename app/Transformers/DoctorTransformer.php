@@ -12,7 +12,7 @@ use Dinkara\DinkoApi\Transformers\ApiTransformer;
 class DoctorTransformer extends ApiTransformer{
     
     protected $defaultIncludes = ['user'];
-    protected $availableIncludes = ['certificates', 'sessions', 'company'];
+    protected $availableIncludes = ['certificates', 'company'];
     protected $pivotAttributes = [];
     
     /**
