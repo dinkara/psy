@@ -231,7 +231,7 @@ class AuthController extends ApiController {
             $requestKeys = array_keys($request->rules());
             $userData = $request->only(array_intersect($requestKeys, $this->userRepo->getModel()->getFillable()));
             $profileData = $request->only(array_intersect($requestKeys, $this->profileRepo->getModel()->getFillable()));
-            $this->userRepo->register($userData)->attachRole($this->roleRepo->findByName(RoleTypes::USER)->getModel());
+            $this->userRepo->register($userData, false)->attachRole($this->roleRepo->findByName(RoleTypes::USER)->getModel());
             $profileData["user_id"] = $this->userRepo->getModel()->id;
 
             if($request->file("avatar")){
