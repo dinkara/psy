@@ -32,7 +32,7 @@ class SessionController extends ResourceController
 
         $this->middleware(['patient', 'session.participant', 'session.scheduled'], ['only' => ['approve']]);               
         
-        $this->middleware('session.participant', ['only' => ['cancel']]);
+        $this->middleware('session.participant', ['only' => ['cancel', 'show']]);
         
         $this->middleware('doctor', ['only' => ['store', 'update', 'destroy']]);
 

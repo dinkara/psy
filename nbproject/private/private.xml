@@ -5,6 +5,7 @@
         <group>
             <file>file:/C:/wamp/www/psy/app/Http/Kernel.php</file>
             <file>file:/C:/wamp/www/psy/app/Http/Requests/SearchSessionsRequest.php</file>
+            <file>file:/C:/wamp/www/psy/app/Transformers/SessionTransformer.php</file>
             <file>file:/C:/wamp/www/psy/app/Http/Middleware/CanMessage.php</file>
             <file>file:/C:/wamp/www/psy/app/Transformers/QuestionTransformer.php</file>
             <file>file:/C:/wamp/www/psy/app/Repositories/Message/IMessageRepo.php</file>
@@ -13,6 +14,7 @@
             <file>file:/C:/wamp/www/psy/app/Http/Controllers/UserController.php</file>
             <file>file:/C:/wamp/www/psy/database/seeds/RoleSeeder.php</file>
             <file>file:/C:/wamp/www/psy/resources/lang/en/middlewares.php</file>
+            <file>file:/C:/wamp/www/psy/app/Http/Controllers/Auth/AuthController.php</file>
             <file>file:/C:/wamp/www/psy/app/Http/Controllers/PatientController.php</file>
             <file>file:/C:/wamp/www/psy/app/Http/Requests/StoreMessageRequest.php</file>
             <file>file:/C:/wamp/www/psy/app/Repositories/Doctor/IDoctorRepo.php</file>
